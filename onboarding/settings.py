@@ -132,4 +132,9 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Other Config
+CSRF_TRUSTED_ORIGINS=['https://api.directapplication.app']
 CORS_ORIGIN_ALLOW_ALL = True
+#SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
+#SESSION_COOKIE_HTTPONLY = True
+#CSRF_COOKIE_HTTPONLY = True
