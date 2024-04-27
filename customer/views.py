@@ -28,5 +28,9 @@ class CustomerLoginView(APIView):
         if customer.password != password:
             return Response({'error': 'Password incorrect'}, status=status.HTTP_401_UNAUTHORIZED)
 
+        # Login successful, generate and assign token
+        customer.generate_and_assign_token()
+
+        # Serialize customer data including the generated token
         serializer = CustomerSerializer(customer)
         return Response(serializer.data, status=status.HTTP_200_OK)
