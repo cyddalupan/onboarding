@@ -1,6 +1,12 @@
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
 
-class HelloWorld(APIView):
-    def get(self, request):
-        return Response("Hello, World!")
+from .serializers import JobsSerializer
+from .models import Job
+
+class JobsCreateView(generics.ListCreateAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobsSerializer
+
+class JobsRetrieveUpdateDeleteView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Job.objects.all()
+    serializer_class = JobsSerializer

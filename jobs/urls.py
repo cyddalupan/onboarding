@@ -1,6 +1,7 @@
 from django.urls import path
-from .views import HelloWorld
+from .views import JobsCreateView, JobsRetrieveUpdateDeleteView
 
 urlpatterns = [
-    path('hello/', HelloWorld.as_view()),
+    path('', JobsCreateView.as_view(), name='jobs-list-create'),
+    path('<int:pk>/', JobsRetrieveUpdateDeleteView.as_view(), name='jobs-detail'),
 ]
