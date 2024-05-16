@@ -1,6 +1,5 @@
 from django.db import models
 
-# Create your models here.
 class Job(models.Model):
     title = models.CharField(max_length=150)
     salary = models.DecimalField(max_digits=10, decimal_places=2)
@@ -22,3 +21,10 @@ class GalleryImage(models.Model):
 
     def __str__(self):
         return f"Image for {self.job.title}"
+
+class JobVideo(models.Model):
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    video = models.FileField(upload_to='static/videos/job_videos/')
+    
+    def __str__(self):
+        return f"Video for {self.job.title}"

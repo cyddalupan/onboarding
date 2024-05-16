@@ -1,5 +1,4 @@
 from rest_framework import generics
-
 from .serializers import JobsSerializer
 from .models import Job
 
