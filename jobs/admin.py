@@ -7,10 +7,12 @@ class GalleryImageInline(admin.TabularInline):
     extra = 3
 
     def image_tag(self, obj):
-        return mark_safe(f'<img src="{obj.image.url}" width="100" height="100" />')
+        if obj.image:
+            return mark_safe(f'<img src="{obj.image.url}" width="100" height="100" />')
+        return "No Image"
 
     image_tag.short_description = 'Gallery Image'
-    fields = ('image_tag',)
+    fields = ('image', 'image_tag',)
     readonly_fields = ('image_tag',)
 
 class JobVideoInline(admin.TabularInline):
@@ -18,7 +20,9 @@ class JobVideoInline(admin.TabularInline):
     extra = 3
 
     def video_tag(self, obj):
-        return mark_safe(f'<video width="320" height="240" controls><source src="{obj.video.url}" type="video/mp4">Your browser does not support the video tag.</video>')
+        if obj.video:
+            return mark_safe(f'<video width="320" height="240" controls><source src="{obj.video.url}" type="video/mp4">Your browser does not support the video tag.</video>')
+        return "No Video"
 
     video_tag.short_description = 'Video'
     fields = ('video', 'video_tag',)
