@@ -161,5 +161,7 @@ cython_debug/
 
 # User Upload Files
 static/videos/job_videos/
-static/customer_attachments
+static/customer_attachments/
+media/static/videos/job_videos/
+media/static/images/job_gallery/
 db.sqlite3
