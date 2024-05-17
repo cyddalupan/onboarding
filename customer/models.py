@@ -1,4 +1,5 @@
 from django.db import models
+from jobs.models import Job
 import random
 import string
 
@@ -33,3 +34,14 @@ class Attachment(models.Model):
 
     def __str__(self):
         return f"Attachment for {self.customer.firstname} {self.customer.lastname}"
+
+class Favorite(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    job = models.ForeignKey(Job, on_delete=models.CASCADE)
+    added_on = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('customer', 'job')
+
+    def __str__(self):
+        return f"{self.customer.username} favorited {self.job.title}"
