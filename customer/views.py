@@ -37,8 +37,6 @@ class CustomerLoginView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 class AddFavoriteView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-
     def post(self, request):
         customer_id = request.data.get('customer_id')
         job_id = request.data.get('job_id')
@@ -56,7 +54,6 @@ class AddFavoriteView(APIView):
 
 class ListFavoritesView(generics.ListAPIView):
     serializer_class = FavoriteSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         customer_id = self.kwargs.get('customer_id')  # Fetch the customer_id from URL parameters
