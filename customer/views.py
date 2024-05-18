@@ -52,6 +52,21 @@ class AddFavoriteView(APIView):
         serializer = FavoriteSerializer(favorite)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+class DeleteFavoriteView(APIView):
+    def post(self, request):
+        customer_id = request.data.get('customer_id')
+        job_id = request.data.get('job_id')
+
+        customer = get_object_or_404(Customer, id=customer_id)
+        job = get_object_or_404(Job, id=job_id)
+
+        favorite = Favorite.objects.filter(customer=customer, job=job).first()
+        
+        if not favorite:
+            return Response({'message': 'Favorite not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        favorite.delete()
+        return Response({'message': 'Favorite removed'}, status=status.HTTP_204_NO_CONTENT)
 class ListFavoritesView(generics.ListAPIView):
     serializer_class = FavoriteSerializer
 
