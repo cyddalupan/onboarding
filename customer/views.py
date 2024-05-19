@@ -68,6 +68,7 @@ class DeleteFavoriteView(APIView):
         
         favorite.delete()
         return Response({'message': 'Favorite removed'}, status=status.HTTP_204_NO_CONTENT)
+
 class ListFavoritesView(generics.ListAPIView):
     serializer_class = FavoriteSerializer
 
@@ -90,21 +91,8 @@ class ForgotPasswordView(APIView):
         
         # Send the current password via email
         subject = "Your Password Information"
-        message = f"""Dear {customer.firstname},
+        message = f"Dear {customer.firstname},\n\nWe are reaching out to provide you with your current password. Please find it below:\n\n**Password:** {customer.password}\n\nAt Dirrect Application, we are committed to empowering Filipinos to reach new horizons.\nIf you have any questions or need further assistance, please don't hesitate to contact our support team.\n\nBest regards,\n\nThe Dirrect Application Team\n\nEmpowering Filipinos to Reach New Horizons\n"
 
-            We are reaching out to provide you with your current password. Please find it below:
-
-            **Password:** {customer.password}
-
-            At Dirrect Application, we are committed to empowering Filipinos to reach new horizons.
-            If you have any questions or need further assistance, please don't hesitate to contact our support team.
-
-            Best regards,
-
-            The Dirrect Application Team
-
-            Empowering Filipinos to Reach New Horizons
-            """
         send_custom_email(subject, message, [email])
         
         return Response({'message': 'Password has been sent to your email'}, status=status.HTTP_200_OK)
