@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from .models import Customer, Favorite
 from jobs.models import Job
 from .serializers import FavoriteSerializer
+from .utils import send_custom_email
 
 class CustomerCreateView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
@@ -74,3 +75,36 @@ class ListFavoritesView(generics.ListAPIView):
         customer_id = self.kwargs.get('customer_id')  # Fetch the customer_id from URL parameters
         customer = get_object_or_404(Customer, id=customer_id)
         return Favorite.objects.filter(customer=customer)
+
+class ForgotPasswordView(APIView):
+    def post(self, request):
+        email = request.data.get('email')
+        
+        if not email:
+            return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        try:
+            customer = get_object_or_404(Customer, email=email)
+        except Customer.DoesNotExist:
+            return Response({'error': 'Email not found'}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Send the current password via email
+        subject = "Your Password Information"
+        message = f"""Dear {customer.firstname},
+
+            We are reaching out to provide you with your current password. Please find it below:
+
+            **Password:** {customer.password}
+
+            At Dirrect Application, we are committed to empowering Filipinos to reach new horizons.
+            If you have any questions or need further assistance, please don't hesitate to contact our support team.
+
+            Best regards,
+
+            The Dirrect Application Team
+
+            Empowering Filipinos to Reach New Horizons
+            """
+        send_custom_email(subject, message, [email])
+        
+        return Response({'message': 'Password has been sent to your email'}, status=status.HTTP_200_OK)

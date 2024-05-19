@@ -5,3 +5,4 @@ pip install django-filter  # Filtering support
 pip install Pillow
 pip install django-cors-headers
 pip install gunicorn
+pip install django-environ
