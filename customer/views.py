@@ -8,6 +8,7 @@ from .models import Customer, Favorite
 from jobs.models import Job
 from .serializers import FavoriteSerializer
 from .utils import send_custom_email
+from django.utils import timezone
 
 class CustomerCreateView(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
@@ -80,19 +81,28 @@ class ListFavoritesView(generics.ListAPIView):
 class ForgotPasswordView(APIView):
     def post(self, request):
         email = request.data.get('email')
-        
+
         if not email:
             return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
-        
+
         try:
             customer = get_object_or_404(Customer, email=email)
         except Customer.DoesNotExist:
             return Response({'error': 'Email not found'}, status=status.HTTP_404_NOT_FOUND)
-        
+
+        # Check if the customer has already requested a password reset today
+        if customer.last_forgot_password and customer.last_forgot_password.date() == timezone.now().date():
+            return Response({'error': 'You have already requested a password reset today. Please try again tomorrow or check your email.'},
+                            status=status.HTTP_400_BAD_REQUEST)
+
         # Send the current password via email
         subject = "Your Password Information"
         message = f"Dear {customer.firstname},\n\nWe are reaching out to provide you with your current password. Please find it below:\n\n**Password:** {customer.password}\n\nAt Dirrect Application, we are committed to empowering Filipinos to reach new horizons.\nIf you have any questions or need further assistance, please don't hesitate to contact our support team.\n\nBest regards,\n\nThe Dirrect Application Team\n\nEmpowering Filipinos to Reach New Horizons\n"
 
         send_custom_email(subject, message, [email])
-        
+
+        # Update the last_forgot_password field
+        customer.last_forgot_password = timezone.now()
+        customer.save()
+
         return Response({'message': 'Password has been sent to your email'}, status=status.HTTP_200_OK)
