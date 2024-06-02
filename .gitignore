@@ -164,3 +164,4 @@ static/videos/job_videos/
 static/customer_attachments/
 media/
 db.sqlite3
+.DS_Store

@@ -85,8 +85,9 @@ class ForgotPasswordView(APIView):
         if not email:
             return Response({'error': 'Email is required'}, status=status.HTTP_400_BAD_REQUEST)
 
+        # Query the Customer model directly instead of using get_object_or_404
         try:
-            customer = get_object_or_404(Customer, email=email)
+            customer = Customer.objects.get(email=email)
         except Customer.DoesNotExist:
             return Response({'error': 'Email not found'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -97,7 +98,16 @@ class ForgotPasswordView(APIView):
 
         # Send the current password via email
         subject = "Your Password Information"
-        message = f"Dear {customer.firstname},\n\nWe are reaching out to provide you with your current password. Please find it below:\n\n**Password:** {customer.password}\n\nAt Dirrect Application, we are committed to empowering Filipinos to reach new horizons.\nIf you have any questions or need further assistance, please don't hesitate to contact our support team.\n\nBest regards,\n\nThe Dirrect Application Team\n\nEmpowering Filipinos to Reach New Horizons\n"
+        message = (
+            f"Dear {customer.firstname},\n\n"
+            f"We are reaching out to provide you with your current password. Please find it below:\n\n"
+            f"**Password:** {customer.password}\n\n"
+            f"At Dirrect Application, we are committed to empowering Filipinos to reach new horizons.\n"
+            f"If you have any questions or need further assistance, please don't hesitate to contact our support team.\n\n"
+            f"Best regards,\n\n"
+            f"The Dirrect Application Team\n\n"
+            f"Empowering Filipinos to Reach New Horizons\n"
+        )
 
         send_custom_email(subject, message, [email])
 
