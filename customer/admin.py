@@ -24,8 +24,8 @@ class AttachmentInline(admin.TabularInline):
 
 # Register your models here.
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ('username', 'firstname', 'lastname', 'email', 'mobile', 'created_at')
-    search_fields = ('username', 'firstname', 'lastname', 'email')
+    list_display = ('username', 'firstname', 'lastname', 'email', 'mobile', 'is_activated', 'created_at')
+    search_fields = ('username', 'firstname', 'lastname', 'email', 'is_activated')
     readonly_fields = ('created_at',)
     inlines = [AttachmentInline]  # Add the inline for Attachment
 

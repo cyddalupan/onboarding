@@ -18,6 +18,7 @@ class Customer(models.Model):
     email = models.EmailField(unique=True)
     mobile = models.CharField(max_length=20)
     token = models.CharField(max_length=100, blank=True)
+    is_activated = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     last_forgot_password = models.DateTimeField(null=True, blank=True)
 
