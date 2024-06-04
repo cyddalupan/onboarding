@@ -29,7 +29,7 @@ class JobVideoInline(admin.TabularInline):
     readonly_fields = ('video_tag',)
 
 class JobAdmin(admin.ModelAdmin):
-    list_display = ('title', 'salary', 'company_name', 'date_created')
+    list_display = ('title', 'salary', 'company_name', 'referral_code', 'date_created')
     list_filter = ('company_name', 'date_created')
     search_fields = ('title', 'company_name')
     readonly_fields = ('date_created',)

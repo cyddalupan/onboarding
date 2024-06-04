@@ -11,6 +11,7 @@ class Job(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
     company_name = models.CharField(max_length=150)
     company_logo = models.ImageField(upload_to='static/images/company_logos/')
+    referral_code = models.CharField(max_length=50, default='')
 
     def __str__(self):
         return self.title
