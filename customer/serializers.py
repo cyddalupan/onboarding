@@ -5,7 +5,7 @@ from .models import Customer, Favorite
 class CustomerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
-        fields = ['id', 'username', 'password', 'firstname', 'lastname', 'email', 'mobile', 'token', 'created_at']
+        fields = ['id', 'username', 'password', 'firstname', 'lastname', 'email', 'mobile', 'is_activated', 'token', 'created_at']
         read_only_fields = ['id', 'created_at']
 
 class FavoriteSerializer(serializers.ModelSerializer):
