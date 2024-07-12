@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'jobs',
     'customer',
+    'playground',
 ]
 
 MIDDLEWARE = [
@@ -159,3 +160,42 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+
+LOGGING = {
+        'version': 1,
+        'disable_existing_loggers': False,
+        'formatters': {
+            'default': {
+                'format': '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                },
+            },
+        'handlers': {
+            'console': {
+                'class': 'logging.StreamHandler',
+                'formatter': 'default',
+                },
+            },
+        'loggers': {
+            'django': {
+                'handlers': ['console'],
+                'level': 'WARNING',  # Set higher level to avoid clutter
+                'propagate': True,
+                },
+            'gunicorn.error': {
+                'handlers': ['console'],
+                'level': 'ERROR',
+                'propagate': False,
+                },
+            'gunicorn.access': {
+                'handlers': ['console'],
+                'level': 'INFO',
+                'propagate': False,
+                },
+            # Custom logger for your application
+            'myapp': {
+                'handlers': ['console'],
+                'level': 'INFO',  # Set to INFO to capture info logs
+                'propagate': True,
+                },
+            },
+        }
